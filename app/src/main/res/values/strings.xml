@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Android_Week10_Ex1</string>
+    <string name="HoTen">Họ tên</string>
+    <string name="add">Add</string>
+    <string name="MSSV">Mã số sinh viên</string>
+    <string name="update">Update</string>
+    <string name="delete">Xóa</string>
+    <string name="nameStudent">Tên sinh viên</string>
+    <string name="Mssv">Mã số sinh viên</string>
+</resources>
