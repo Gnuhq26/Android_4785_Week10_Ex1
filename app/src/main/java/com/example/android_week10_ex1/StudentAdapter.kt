@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class StudentAdapter(
-    val students: List<StudentModel>,
+    private var students: MutableList<StudentModel>,
     val onDelete: (Int) -> Unit,
     val onSelect: (StudentModel) -> Unit
 ) : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
@@ -28,6 +28,12 @@ class StudentAdapter(
     }
 
     override fun getItemCount() = students.size
+
+    // Method to update the list of students and refresh the RecyclerView
+    fun updateList(newList: MutableList<StudentModel>) {
+        students = newList
+        notifyDataSetChanged()
+    }
 
     class StudentViewHolder(
         itemView: View,

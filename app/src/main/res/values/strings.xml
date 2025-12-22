@@ -7,4 +7,5 @@
     <string name="delete">Xóa</string>
     <string name="nameStudent">Tên sinh viên</string>
     <string name="Mssv">Mã số sinh viên</string>
+    <string name="cancel">Cancel</string>
 </resources>
