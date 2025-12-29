@@ -8,60 +8,53 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class StudentAdapter(
-    private var students: MutableList<StudentModel>,
-    val onDelete: (Int) -> Unit,
+    private var students: List<StudentModel>,
+    val onDelete: (StudentModel) -> Unit,
     val onSelect: (StudentModel) -> Unit
 ) : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_student, parent, false)
-        // Pass the students list to the ViewHolder
-        return StudentViewHolder(itemView, students, onDelete, onSelect)
+        return StudentViewHolder(itemView, onDelete, onSelect)
     }
 
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
         val student = students[position]
-        holder.nameView.text = student.name
-        holder.idView.text = student.id
-        // No need to set position here anymore
+        holder.bind(student)
     }
 
     override fun getItemCount() = students.size
 
-    // Method to update the list of students and refresh the RecyclerView
-    fun updateList(newList: MutableList<StudentModel>) {
-        students = newList
+    fun updateList(newStudents: List<StudentModel>) {
+        students = newStudents
         notifyDataSetChanged()
     }
 
     class StudentViewHolder(
         itemView: View,
-        // Add students list to the constructor
-        val students: List<StudentModel>,
-        val onDelete: (Int) -> Unit,
+        val onDelete: (StudentModel) -> Unit,
         val onSelect: (StudentModel) -> Unit
     ) : RecyclerView.ViewHolder(itemView) {
         val nameView: TextView = itemView.findViewById(R.id.text_name)
         val idView: TextView = itemView.findViewById(R.id.text_id)
         val deleteBtn: ImageView = itemView.findViewById(R.id.btn_delete)
-        // REMOVED: var position = 0
+
+        private var currentStudent: StudentModel? = null
 
         init {
             deleteBtn.setOnClickListener {
-                // Use adapterPosition to get the current position
-                val currentPosition = adapterPosition
-                if (currentPosition != RecyclerView.NO_POSITION) {
-                    onDelete(currentPosition)
-                }
+                currentStudent?.let { onDelete(it) }
             }
             itemView.setOnClickListener {
-                // Use adapterPosition to get the current position and the corresponding student
-                val currentPosition = adapterPosition
-                if (currentPosition != RecyclerView.NO_POSITION) {
-                    onSelect(students[currentPosition])
-                }
+                currentStudent?.let { onSelect(it) }
             }
+        }
+
+        fun bind(student: StudentModel) {
+            currentStudent = student
+            nameView.text = student.name
+            idView.text = student.id
         }
     }
 }

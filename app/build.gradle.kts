@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("androidx.navigation.safeargs.kotlin") version "2.8.5"
 }
 
 android {
@@ -35,7 +34,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
-        dataBinding = true
+        viewBinding = true
     }
 }
 
@@ -48,6 +47,10 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    // Gson for simple JSON serialization
+    implementation("com.google.code.gson:gson:2.10.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

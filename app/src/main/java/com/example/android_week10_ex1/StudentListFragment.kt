@@ -22,13 +22,16 @@ class StudentListFragment : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
         val adapter = StudentAdapter(
-            students = mutableListOf(),
-            onDelete = { position ->
-                viewModel.deleteStudent(position)
+            students = emptyList(),
+            onDelete = { student ->
+                viewModel.deleteStudent(student)
             },
             onSelect = { student ->
-                val action = StudentListFragmentDirections.actionStudentListToUpdateStudent(student.id, student.name)
-                findNavController().navigate(action)
+                val bundle = Bundle().apply {
+                    putString("studentId", student.id)
+                    putString("studentName", student.name)
+                }
+                findNavController().navigate(R.id.action_studentList_to_updateStudent, bundle)
             }
         )
 
@@ -36,7 +39,7 @@ class StudentListFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.students.observe(viewLifecycleOwner) { students ->
-            adapter.updateList(students ?: mutableListOf())
+            adapter.updateList(students ?: emptyList())
         }
 
         // Add button to navigate to AddStudentFragment

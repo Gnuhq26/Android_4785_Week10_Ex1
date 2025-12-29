@@ -1,25 +1,31 @@
 package com.example.android_week10_ex1
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 
-class StudentViewModel : ViewModel() {
-    private val _students = MutableLiveData<MutableList<StudentModel>>(mutableListOf())
-    val students: LiveData<MutableList<StudentModel>> get() = _students
+class StudentViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository: StudentRepository
+    val students: LiveData<List<StudentModel>>
+
+    init {
+        repository = StudentRepository(application)
+        students = repository.allStudents
+    }
 
     fun addStudent(student: StudentModel) {
-        _students.value?.add(student)
-        _students.value = _students.value // Trigger LiveData update
+        repository.insert(student)
     }
 
-    fun updateStudent(position: Int, student: StudentModel) {
-        _students.value?.set(position, student)
-        _students.value = _students.value
+    fun updateStudent(student: StudentModel) {
+        repository.update(student)
     }
 
-    fun deleteStudent(position: Int) {
-        _students.value?.removeAt(position)
-        _students.value = _students.value
+    fun deleteStudent(student: StudentModel) {
+        repository.delete(student)
+    }
+
+    fun deleteAllStudents() {
+        repository.deleteAll()
     }
 }
